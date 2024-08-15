@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Sign-Up</title>
+       <link rel="stylesheet" href="../css/signup.css">
+</head>
+
+
+<body>
+       <h1>Sign Up </h1>
+       <!-- signup form -->
+       <div class="signup-box">
+              <div class="subdiv">
+                  <label for="nameInput">Name</label>
+                  <input type="text" class="name ele" id="nameInput" placeholder="Enter your name" required>
+              </div>
+              <div class="subdiv">
+                  <label for="emailInput">UserName</label>
+                  <input type="email" class="email ele" id="emailInput" placeholder="youremail@" required>
+              </div>
+              <div class="subdiv">
+                  <label for="passwordInput">Password</label>
+                  <input type="password" class="password ele" id="passwordInput" placeholder="password" required>
+              </div>
+              <div class="subdiv">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input type="password" class="password ele" id="confirmPassword" placeholder="Confirm password" required>
+              </div>
+              <button class="clkbtn" id="signupBtn">Sign Up</button>
+              <p id="message"></p>
+          </div>
+       <script>
+              document.getElementById('signupBtn').addEventListener('click', function(event) {
+                  event.preventDefault();
+      
+                  const name = document.getElementById('nameInput').value;
+                  const email = document.getElementById('emailInput').value;
+                  const password = document.getElementById('passwordInput').value;
+                  const confirmPassword = document.getElementById('confirmPassword').value;
+      
+                  if (password !== confirmPassword) {
+                      document.getElementById('message').textContent = 'Passwords do not match';
+                      return;
+                  }
+      
+                  let userList = JSON.parse(localStorage.getItem('user')) || [];
+                  const userExists = userList.some(user => user.email === email);
+      
+                  if (userExists) {
+                      document.getElementById('message').textContent = 'User already exists. Please log in.';
+                      setTimeout(() => {
+                          window.location.href = 'login.html';
+                      }, 2000);
+                      return;
+                  }
+      
+                  const userObj = {
+                      name: name,
+                      email: email,
+                      password: password
+                  };
+      
+                  userList.push(userObj);
+                  localStorage.setItem('user', JSON.stringify(userList));
+      
+                  document.getElementById('message').textContent = 'Sign-Up Successful! Redirecting to login...';
+                  
+                  setTimeout(() => {
+                      window.location.href = 'login.html';
+                  }, 2000);
+              });
+          </script>
+</body>
+
+</html>
